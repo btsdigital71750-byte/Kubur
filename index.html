@@ -164,13 +164,16 @@
             });
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['NoPtk'] !== null ? autolinker.link(String(feature.properties['NoPtk']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <th scope="row">NoPtk</th>\
+                        <td class="visible-with-data" id="NoPtk">' + (feature.properties['NoPtk'] !== null ? autolinker.link(String(feature.properties['NoPtk']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['NmArwah'] !== null ? autolinker.link(String(feature.properties['NmArwah']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <th scope="row">NmArwah</th>\
+                        <td class="visible-with-data" id="NmArwah">' + (feature.properties['NmArwah'] !== null ? autolinker.link(String(feature.properties['NmArwah']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['TrkKbumi'] !== null ? autolinker.link(String(feature.properties['TrkKbumi']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <th scope="row">TrkKbumi</th>\
+                        <td class="visible-with-data" id="TrkKbumi">' + (feature.properties['TrkKbumi'] !== null ? autolinker.link(String(feature.properties['TrkKbumi']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
