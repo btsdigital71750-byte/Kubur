@@ -48,7 +48,7 @@
         }
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
-        }).fitBounds([[2.8722661702827557,101.90078569095354],[2.8724171923276627,101.90105351607544]]);
+        }).fitBounds([[2.871896099737247,101.90025226635596],[2.872649856689364,101.9017091426987]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/qgis2web/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -75,9 +75,20 @@
                 var src = imgTd.getAttribute('src');
                 if (/\.(jpg|jpeg|png|gif|bmp|webp|avif)$/i.test(src)) {
                     popup._contentNode.classList.add('media');
-                    setTimeout(function() {
-                        popup.update();
-                    }, 10);
+                    var img = popup._contentNode.querySelector('td img');
+                    if (img) {
+                        // If already loaded (cache), update immediately
+                        if (img.complete && img.naturalHeight > 0) {
+                            popup.update();
+                        } else {
+                            img.addEventListener('load', function() {
+                                popup.update();
+                            });
+                            img.addEventListener('error', function() {
+                                popup.update();
+                            });
+                        }
+                    }
                 } else if (/\.(mp3|wav|ogg|aac)$/i.test(src)) {
                     var audio = document.createElement('audio');
                     audio.controls = true;
@@ -140,15 +151,15 @@
         });
         layer_GoogleSatelliteHybrid_0;
         map.addLayer(layer_GoogleSatelliteHybrid_0);
-        map.createPane('pane_Kubur2602_1');
-        map.getPane('pane_Kubur2602_1').style.zIndex = 401;
-        var img_Kubur2602_1 = 'data/Kubur2602_1.png';
-        var img_bounds_Kubur2602_1 = [[2.871651453594582,101.90028620624517],[2.872791440409207,101.90172096933185]];
-        var layer_Kubur2602_1 = new L.imageOverlay(img_Kubur2602_1,
-                                              img_bounds_Kubur2602_1,
-                                              {pane: 'pane_Kubur2602_1'});
-        bounds_group.addLayer(layer_Kubur2602_1);
-        map.addLayer(layer_Kubur2602_1);
+        map.createPane('pane_Kubur2607_1');
+        map.getPane('pane_Kubur2607_1').style.zIndex = 401;
+        var img_Kubur2607_1 = 'data/Kubur2607_1.png';
+        var img_bounds_Kubur2607_1 = [[2.8719144516490127,101.90048018520183],[2.872631505026118,101.90148122398666]];
+        var layer_Kubur2607_1 = new L.imageOverlay(img_Kubur2607_1,
+                                              img_bounds_Kubur2607_1,
+                                              {pane: 'pane_Kubur2607_1'});
+        bounds_group.addLayer(layer_Kubur2607_1);
+        map.addLayer(layer_Kubur2607_1);
         function pop_Kubur_2(feature, layer) {
             layer.on({
                 mouseout: function(e) {
@@ -221,7 +232,7 @@
         map.addLayer(layer_Kubur_2);
         var overlaysTree = [
             {label: '<img src="legend/Kubur_2.png" /> Kubur', layer: layer_Kubur_2},
-            {label: "Kubur-2602", layer: layer_Kubur2602_1},
+            {label: "Kubur-2607", layer: layer_Kubur2607_1},
             {label: "Google Satellite Hybrid", layer: layer_GoogleSatelliteHybrid_0},]
         var lay = L.control.layers.tree(null, overlaysTree,{
             //namedToggle: true,
@@ -284,6 +295,19 @@
             }  
         });       
         setBounds();
+        var i = 0;
+        layer_Kubur_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['NoPtk'] !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Liberation Sans\', sans-serif;">' + layer.feature.properties['NoPtk']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Kubur_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
         map.addControl(new L.Control.Search({
             layer: layer_Kubur_2,
             initial: false,
@@ -298,6 +322,16 @@
             getBounds: function () {
                 return this._bounds;
             }
+        });
+        resetLabels([layer_Kubur_2]);
+        map.on("zoomend", function(){
+            resetLabels([layer_Kubur_2]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_Kubur_2]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_Kubur_2]);
         });
         </script>        
     </body>
